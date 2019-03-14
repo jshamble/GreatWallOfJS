@@ -1,0 +1,674 @@
+/*flex-direction: row | row-reverse | column | column-reverse;*/
+/* NOTE: The styles were added inline because Prefixfree needs access to your styles and they must be inlined if they are on local disk! */
+@import url('https://fonts.googleapis.com/css?family=Dosis');
+
+.flex-container.row {
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.flex-container.row-reverse {
+  -webkit-flex-direction: row-reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+}
+
+.flex-container.column {
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.flex-container.column-reverse {
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column-reverse;
+}
+
+/*flex-wrap: nowrap | wrap | wrap-reverse;*/
+
+.flex-container.nowrap {
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+}
+
+.flex-container.wrap {
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.flex-container.wrap-reverse {
+  -webkit-flex-wrap: wrap-reverse;
+  -ms-flex-wrap: wrap-reverse;
+  flex-wrap: wrap-reverse;
+}
+
+/*align-items: flex-start | flex-end | center | baseline | stretch;*/
+
+.flex-container.align-items-start {
+  -webkit-align-items: flex-start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+}
+
+.flex-container.align-items-end {
+  -webkit-align-items: flex-end;
+  -ms-flex-align: end;
+  align-items: flex-end;
+}
+
+.flex-container.align-items-center {
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.flex-container.align-items-baseline {
+  webkit-align-items: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+}
+
+.flex-container.align-items-stretch {
+  webkit-align-items: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+}
+
+/*justify-content: flex-start | flex-end | center | space-between | space-around;*/
+
+.flex-container.justify-start {
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+
+.flex-container.justify-end {
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+
+.flex-container.justify-center {
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.flex-container.justify-space-between {
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.flex-container.justify-space-around {
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: justify;
+  justify-content: space-around;
+}
+
+/*align-content: flex-start | flex-end | center | space-between | space-around | stretch;*/
+
+.align-content-start {
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+}
+
+.align-content-end {
+  -webkit-align-content: flex-end;
+  -ms-flex-line-pack: end;
+  align-content: flex-end;
+}
+
+.align-content-center {
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.align-content-space-between {
+  -webkit-align-content: space-between;
+  -ms-flex-line-pack: justify;
+  align-content: space-between;
+}
+
+.align-content-space-around {
+  -webkit-align-content: space-around;
+  -ms-flex-line-pack: justify;
+  /*distribute;*/
+  align-content: space-around;
+}
+
+.align-content-stretch {
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+}
+
+/*align-self: auto | flex-start | flex-end | center | baseline | stretch;*/
+
+.item.align-self-auto {
+  -webkit-align-self: auto;
+  -ms-flex-item-align: auto;
+  align-self: auto;
+}
+
+.item.align-self-start {
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+}
+
+.item.align-self-end {
+  -webkit-align-self: flex-end;
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+}
+
+.item.align-self-center {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.item.align-self-baseline {
+  -webkit-align-self: baseline;
+  -ms-flex-item-align: baseline;
+  align-self: baseline;
+}
+
+.item.align-self-stretch {
+  -webkit-align-self: stretch;
+  -ms-flex-item-align: stretch;
+  align-self: stretch;
+}
+
+.item.flex-grow1 {
+  flex-grow: 1;
+}
+
+.item.flex-grow2 {
+  flex-grow: 2;
+}
+
+.item.flex-grow3 {
+  flex-grow: 3;
+}
+
+.item.flex-grow4 {
+  flex-grow: 4;
+}
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  color: #ddd;
+  font-size: 14px;
+  font-family: Verdana, Geneva, sans-serif;
+  background-color: #333;
+}
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.principal {
+  width: calc(100% - 40px);
+  min-width: 525px;
+  margin: 0 20px 20px 20px;
+  float: left;
+}
+.radio {
+  margin-bottom: 20px;
+}
+label {
+  line-height: 200%;
+}
+input[type="radio"] {
+  color: white;
+}
+input[type="radio"]:checked + label {
+  color: orange;
+}
+input[type="number"] {
+  width: 40px;
+  margin-right: 0.5em;
+}
+h1 {
+  font-size: 200%;
+  margin: 20px;
+}
+h2 {
+  font-size: 180%;
+  margin: 0px;
+}
+h4 a {
+  font-variant: small-caps;
+  font-size: 120%;
+  color: #ddd;
+  text-decoration: none;
+}
+h4 small {
+  font-variant: normal;
+  font-size: 80%;
+  font-weight: normal;
+  color: #57bcdb;
+}
+table {
+  width: 100%;
+  margin-bottom: 1em;
+}
+table td {
+  width: 50%;
+  padding: 3px;
+}
+.principal:last-of-type h4 small {
+  color: #ff8080;
+}
+.flex-container {
+  border: 1px solid #555;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 10px;
+  width: 100%;
+}
+
+/*control the spacing between items here  T R B L (Trouble mnemonic )*/
+.item {
+  /*padding: 10px 0 10px 0; size of the button...*/
+  /*width: 100px;*/
+  /*width: 3%; 25% = 4 items per row... calculate it by 1/n, where N is the number of items you would like per row*/
+} 
+
+.buttonBrick{
+	margin: 2.2em 2.2em 2.2em 2.2em;
+}
+
+
+.buttonBrickSelected {
+    transition: 0.25s linear !important; /*in out different transitions*/
+	display:flex;
+	font-family:Dosis;
+	color:#FFFFFF !important;
+	background-color:#4CAF50 !important;
+	border-radius:25px;
+	cursor:pointer;
+	/*font-size:30px !important;*/
+	text-align: center;
+	justify-content: center;
+	border": 2px solid #4CAF50;
+	height" : 50px;
+} 
+
+.item-content {
+  position: absolute;
+  margin: 0;
+	border-radius:25px;
+  transition: 0.45s linear; /*easing fade back, slightly faster*/
+  transform: scale(1.0, 1.0);
+  align-items: center !important;
+}
+
+#direction .item {
+  flex-wrap: wrap;
+}
+/*#wrap .item{ height:auto;}*/
+#wrap {
+  width: 400px;
+}
+#align .item {
+  height: auto;
+  flex-wrap: wrap;
+}
+#align {
+  height: 300px;
+}
+#justify {
+  margin: 20px 0;
+  padding: 20px 0;
+}
+
+body div[id^='alignContent'] {
+  flex-wrap: wrap;
+  height: 600px;
+}
+
+body div[id^='alignContent'] .item {
+  height: auto;
+  align-items: center !important; /*fixes bug of the dual shadow*/
+}
+ 
+#FCI1 {
+  height: 300px;
+}
+#FCI1 .item {
+  height: auto;
+}
+#FCI3 .item {
+  width: 25%;
+}
+#FCI4 .item {
+  width: 50%;
+}
+#FCI5 .item {
+  width: 20%;
+}
+.nbsp {
+  white-space: nowrap;
+}
+
+
+@media only screen and (max-width: 1600px) {
+  .item {
+	/*width: 50px;*/
+    /*width: 25%; 25% = 4 items per row... calculate it by 1/n, where N is the number of items you would like per row*/
+    width: 5%;
+	height: 50px;
+  }
+  .principal {
+    width: calc(100% - 40px);
+    min-width: initial;
+  }
+  .flex-container {
+    width: 100%;
+    min-width: initial;
+  }
+  #wrap {
+    width: 200px;
+  }
+}
+
+
+@media only screen and (max-width: 1200px) {
+  .item {
+	/*width: 50px;*/
+    /*width: 25%; 25% = 4 items per row... calculate it by 1/n, where N is the number of items you would like per row*/
+    width: 10%;
+	height: 50px;
+  }
+  .principal {
+    width: calc(100% - 40px);
+    min-width: initial;
+  }
+  .flex-container {
+    width: 100%;
+    min-width: initial;
+  }
+  #wrap {
+    width: 200px;
+  }
+}
+
+
+
+@media only screen and (max-width: 980px) {
+  .item {
+	/*width: 50px;*/
+    /*width: 25%; 25% = 4 items per row... calculate it by 1/n, where N is the number of items you would like per row*/
+    width: 15%;
+	height: 50px;
+  }
+  .principal {
+    width: calc(100% - 40px);
+    min-width: initial;
+  }
+  .flex-container {
+    width: 100%;
+    min-width: initial;
+  }
+  #wrap {
+    width: 200px;
+  }
+}
+
+
+@media only screen and (max-width: 780px) {
+  .item {
+	/*width: 50px;*/
+    /*width: 25%; 25% = 4 items per row... calculate it by 1/n, where N is the number of items you would like per row*/
+    width: 25%;
+	height: 50px;
+  }
+  .principal {
+    width: calc(100% - 40px);
+    min-width: initial;
+  }
+  .flex-container {
+    width: 100%;
+    min-width: initial;
+  }
+  #wrap {
+    width: 200px;
+  }
+}
+
+
+@media only screen and (max-width: 580px) {
+  .item {
+	/*width: 50px;*/
+    /*width: 25%; 25% = 4 items per row... calculate it by 1/n, where N is the number of items you would like per row*/
+    width: 33.33%;
+	height: 50px;
+  }
+  .principal {
+    width: calc(100% - 40px);
+    min-width: initial;
+  }
+  .flex-container {
+    width: 100%;
+    min-width: initial;
+  }
+  #wrap {
+    width: 200px;
+  }
+}
+
+@media only screen and (max-width: 300px) {
+  .item {
+	/*width: 50px;*/
+    /*width: 25%; 25% = 4 items per row... calculate it by 1/n, where N is the number of items you would like per row*/
+    width: 50%;
+	height: 50px;
+  }
+  .principal {
+    width: calc(100% - 40px);
+    min-width: initial;
+  }
+  .flex-container {
+    width: 100%;
+    min-width: initial;
+  }
+  #wrap {
+    width: 200px;
+  }
+}
+
+@media only screen and (max-width: 150px) {
+  .item {
+	/*width: 50px;*/
+    /*width: 25%; 25% = 4 items per row... calculate it by 1/n, where N is the number of items you would like per row*/
+    width: 100%;
+	height: 50px;
+  }
+  .principal {
+    width: calc(100% - 40px);
+    min-width: initial;
+  }
+  .flex-container {
+    width: 100%;
+    min-width: initial;
+  }
+  #wrap {
+    width: 200px;
+  }
+}
+
+
+
+body {
+  padding-top: 35px;
+}
+
+
+#flexBasis {
+	visibility: hidden;
+}
+
+/*button states: onhover and onclick*/
+
+/*onhover: grow*/
+.grow {    
+	transform: scale(1.2, 1.2)!important;
+	z-index: 11 !important;
+    transition: 0.15s cubic-bezier(0.47, 0, 0.745, 0.715) !important; /*in out different transitions... robert penner: https://easings.net/#easeInSine gray rectangle on text using touch screen? remove?*/
+}
+
+/*onclick: Ripple Out*/
+
+@-webkit-keyframes ripple-out {
+  100% {
+    top: -12px;
+    right: -12px;
+    bottom: -12px;
+    left: -12px;
+    opacity: 0;
+  }
+}
+
+@keyframes ripple-out {
+  100% {
+    top: -12px;
+    right: -12px;
+    bottom: -12px;
+    left: -12px;
+    opacity: 0;
+  }
+}
+
+
+@-webkit-keyframes ripple-out-after {
+  100% {
+    top: -12px;
+    right: -12px;
+    bottom: -12px;
+    left: -12px;
+    opacity: 0;
+  }
+}
+
+@keyframes ripple-out-after {
+  100% {
+    top: -12px;
+    right: -12px;
+    bottom: -12px;
+    left: -12px;
+    opacity: 0;
+  }
+}
+
+.ripple-out {
+  position: absolute;
+}
+.ripple-out:before {
+  content: '';
+  position: absolute;
+  border: #4CAF50 solid 6px;
+  border-radius: 25px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+   opacity: 1;
+  -webkit-animation-duration: 0.4s;
+  animation-duration: 0.4s;
+  -webkit-animation-name: ripple-out;
+  animation-name: ripple-out; /*this makes it so that the animation is palyes as soon as the class is added, may need to do the same for ripple in later...*/
+}
+
+.ripple-out:hover:before, .ripple-out:focus:before, .ripple-out:active:before{
+  -webkit-animation-name: ripple-out;
+  animation-name: ripple-out;
+}
+
+.ripple-out:hover:after, .ripple-out:focus:after, .ripple-out:active:after {
+  -webkit-animation-name: ripple-out-after;
+  animation-name: ripple-out-after;
+}
+
+
+@-webkit-keyframes ripple-in {
+  100% {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 1;
+  }
+}
+@keyframes ripple-in {
+  100% {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes ripple-in-after {
+  100% {
+    top: -12px;
+    right: -12px;
+    bottom: -12px;
+    left: -12px;
+    opacity: 1;
+  }
+}
+@keyframes ripple-in-after {
+  100% {
+    top: -12px;
+    right: -12px;
+    bottom: -12px;
+    left: -12px;
+    opacity: 1;
+  }
+}
+
+.ripple-in {
+  position: absolute;
+}
+
+.ripple-in:before 
+{
+  content: '';
+  position: absolute;
+  border: #4CAF50 solid 6px;
+  border-radius: 25px;
+  top: -12px;
+  right: -12px;
+  bottom: -12px;
+  left: -12px;
+  opacity: 0;
+  -webkit-animation-duration: 0.4s;
+  animation-duration: 0.4s;
+  -webkit-animation-name: ripple-in;
+  animation-name: ripple-in; /*this makes it so that the animation is palyes as soon as the class is added, may need to do the same for ripple in later...*/
+}
+
+.ripple-in:hover:before, .ripple-in:focus:before, .ripple-in:active:before {
+  -webkit-animation-name: ripple-in;
+  animation-name: ripple-in;
+
+}
+
+.ripple-in:hover:after, .ripple-in:focus:after, .ripple-in:active:after {
+  -webkit-animation-name: ripple-in-after;
+  animation-name: ripple-in-after;
+}
