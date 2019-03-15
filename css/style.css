@@ -213,71 +213,19 @@ body {
   font-family: Verdana, Geneva, sans-serif;
   background-color: #333;
 }
-* {
-  box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.principal {
-  width: calc(100% - 40px);
-  min-width: 525px;
-  margin: 0 20px 20px 20px;
-  float: left;
-}
-.radio {
-  margin-bottom: 20px;
-}
-label {
-  line-height: 200%;
-}
-input[type="radio"] {
-  color: white;
-}
-input[type="radio"]:checked + label {
-  color: orange;
-}
-input[type="number"] {
-  width: 40px;
-  margin-right: 0.5em;
-}
-h1 {
-  font-size: 200%;
-  margin: 20px;
-}
-h2 {
-  font-size: 180%;
-  margin: 0px;
-}
-h4 a {
-  font-variant: small-caps;
-  font-size: 120%;
-  color: #ddd;
-  text-decoration: none;
-}
-h4 small {
-  font-variant: normal;
-  font-size: 80%;
-  font-weight: normal;
-  color: #57bcdb;
-}
-table {
-  width: 100%;
-  margin-bottom: 1em;
-}
-table td {
-  width: 50%;
-  padding: 3px;
-}
-.principal:last-of-type h4 small {
-  color: #ff8080;
-}
+
 .flex-container {
-  border: 1px solid #555;
+  display: flex;
+}
+
+body div[id^='row']
+{
+  /* border: 1px solid #555; add border to rows...*/
   display: -webkit-flex;
   display: -ms-flexbox;
-  display: flex;
-  padding: 10px;
-  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 /*control the spacing between items here  T R B L (Trouble mnemonic )*/
@@ -291,6 +239,9 @@ table td {
 	margin: 2.2em 2.2em 2.2em 2.2em;
 }
 
+.buttonBrick > div {
+	padding: 10px 10px;
+}
 
 .buttonBrickSelected {
     transition: 0.25s cubic-bezier(0.47, 0, 0.745, 0.715) !important; /*in out different transitions*/
@@ -304,13 +255,12 @@ table td {
 	text-align: center;
 	justify-content: center;
 	border": 2px solid #4CAF50;
-	height" : 50px;
 } 
 
 .item-content {
   position: absolute;
   margin: 0;
-	border-radius:25px;
+  border-radius:25px;
   transition: 0.45s cubic-bezier(0.47, 0, 0.745, 0.715); /*easing fade back, slightly faster*/
   transform: scale(1.0, 1.0);
   align-items: center !important;
@@ -319,25 +269,10 @@ table td {
 #direction .item {
   flex-wrap: wrap;
 }
-/*#wrap .item{ height:auto;}*/
-#wrap {
-  width: 400px;
-}
-#align .item {
-  height: auto;
-  flex-wrap: wrap;
-}
-#align {
-  height: 300px;
-}
-#justify {
-  margin: 20px 0;
-  padding: 20px 0;
-}
 
 body div[id^='alignContent'] {
   flex-wrap: wrap;
-  height: 600px;
+  height: 600px; /*height of body items...*/
 }
 
 body div[id^='alignContent'] .item {

@@ -33,3 +33,10 @@ i.e.
 
 
 support property inheritance (proprties can be manually overriden as well when inherited...)
+
+
+Change the PAdding (size around) the button:
+
+.buttonBrick > div {
+	padding: 10px;
+}

@@ -5,7 +5,6 @@
 		"DOM_name": "GreatWallOfJS0",
 		"properties":
 		{
-			"text-dir":"ANUS",
 			"num-elems": "50",
 			"justify-content": "align-content-start",
 			"className" : "buttonBrick",
@@ -32,6 +31,29 @@
 					"white-space" : "nowrap"
 				}
 			]
+		}
+    },
+	{
+		"DOM_name": "GreatWallOfJS1",
+		"parent" : "GreatWallOfJS0",
+		"properties":
+		{
+			"multiSelect":"true",
+			"text_dir":"json/lang2/"
+		}
+    },
+	{
+		"DOM_name": "GreatWallOfJS2",
+		"parent" : "GreatWallOfJS0",
+		"properties":
+		{
+		}
+    },
+	{
+		"DOM_name": "GreatWallOfJS3",
+		"parent" : "GreatWallOfJS0",
+		"properties":
+		{
 		}
     }
   ]

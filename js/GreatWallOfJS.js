@@ -238,10 +238,6 @@ function buildGreatWall(config_main,config_color,config_text,k)
 		
 		currentlySelectedAlignIndex = k;
 		
-		if( config_main["HTMLNodes"][k]["parent"] != null)
-		{
-			config_main["HTMLNodes"][k]["properties"] = config_main["HTMLNodes"][ getParentNodeIndex(config_main["HTMLNodes"],config_main["HTMLNodes"][k]["parent"]) ]["properties"];
-		}
 		
 		if( config_main["HTMLNodes"][k]["properties"]["justify-content"] != null )
 		{
@@ -250,7 +246,9 @@ function buildGreatWall(config_main,config_color,config_text,k)
 			flex_container.className = "flex-container " + config_main["HTMLNodes"][k]["properties"]["justify-content"];
 			
 			if( config_main["HTMLNodes"][k]["properties"]["multiSelect"] != null)
+			{
 				flex_container.multiSelect = config_main["HTMLNodes"][k]["properties"]["multiSelect"];
+			}
 				
 			for(let z = 0; z < config_main["HTMLNodes"][k]["properties"]["num-elems"]; z++)
 			{ 
@@ -290,7 +288,7 @@ function buildGreatWall(config_main,config_color,config_text,k)
 							let textWidth = getTextWidth(item_brick_inner.innerText,config_main["HTMLNodes"][k]["properties"]["font"]);
 							if(textWidth < 40.0)
 							{
-								item_brick_inner.style[key] = "50px";//config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+								//item_brick_inner.style[key] = "50px";//config_main["HTMLNodes"][k]["properties"]["css"][0][key];
 								//item_brick_outer.style[key] = "50px";//config_main["HTMLNodes"][k]["properties"]["css"][0][key];
 							}
 						}
@@ -332,7 +330,7 @@ function buildGreatWall(config_main,config_color,config_text,k)
 		return new Promise((resolve, reject) => { 
 		setTimeout(() => {
 			resolve();
-		}, 10);
+		}, 30);
 		});
 }
 		
@@ -342,6 +340,16 @@ function prepareBricksForGreatWall(config_main, config_color)
 	
 	for(let k = 0; k < config_main["HTMLNodes"].length; k++)
 	{
+		if( config_main["HTMLNodes"][k]["parent"] != null)
+		{
+			let props = config_main["HTMLNodes"][ getParentNodeIndex(config_main["HTMLNodes"],config_main["HTMLNodes"][k]["parent"]) ]["properties"];
+			for (let key in props) 
+			{
+					if(config_main["HTMLNodes"][k]["properties"][key] == null)
+						config_main["HTMLNodes"][k]["properties"][key] = props[key];
+			}
+		}
+		
 		if( config_main["HTMLNodes"][k]["properties"][ "text_dir" ] != null )
 		{			
 			request({url: ".\\" +  config_main["HTMLNodes"][k]["properties"]["text_dir"] + supported_languages.get(selected_language_name) + "\\script.md"})
@@ -363,7 +371,7 @@ function prepareBricksForGreatWall(config_main, config_color)
             function() {
                 fulfilled( name )
             }, 
-            300
+            100
         )
 
     })
