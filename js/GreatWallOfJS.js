@@ -179,18 +179,6 @@ function onButtonBrickHover()
 	//alert(this.children.length);
 	
 	let elem = this;
-	if(!elem.classList.contains("grow"))
-	{
-		elem.classPreserved = elem.className;
-		elem.className = "grow " + elem.className; 
-	}
-	
-	elem = this.children[0];
-	if(!elem.classList.contains("grow"))
-	{
-		elem.classPreserved = elem.className;
-		elem.className = "grow " + elem.className; 
-	}
 	
 	elem = this.children[1];
 	if(!elem.classList.contains("grow"))
@@ -204,21 +192,12 @@ function onButtonBrickHover()
 function onButtonBrickHoverOut()
 { 
 	let elem = this;
-	if(elem.classList.contains("grow"))
-	{
-		elem.className = elem.classPreserved;
-	}
-	
-	elem = this.children[0];
-	if(elem.classList.contains("grow"))
-	{
-		elem.className = elem.classPreserved;
-	}
 	
 	elem = this.children[1];
 	if(elem.classList.contains("grow"))
 	{
-		elem.className = elem.classPreserved;
+		this.children[1].classList.remove("grow");
+		//elem.className = elem.classPreserved;
 	}
 	
 }
@@ -330,7 +309,7 @@ function buildGreatWall(config_main,config_color,config_text,k)
 		return new Promise((resolve, reject) => { 
 		setTimeout(() => {
 			resolve();
-		}, 30);
+		}, 300);
 		});
 }
 		

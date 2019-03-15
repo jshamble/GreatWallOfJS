@@ -216,6 +216,8 @@ body {
 
 .flex-container {
   display: flex;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 body div[id^='row']
@@ -239,8 +241,10 @@ body div[id^='row']
 	margin: 2.2em 2.2em 2.2em 2.2em;
 }
 
-.buttonBrick > div {
-	padding: 10px 10px;
+.buttonBrick > div, .item-content{
+	padding: 10px 10px !important;
+	text-align: center !important;
+	justify-content: center !important;
 }
 
 .buttonBrickSelected {
@@ -272,6 +276,7 @@ body div[id^='row']
 
 body div[id^='alignContent'] {
   flex-wrap: wrap;
+  width: 900px;
   height: 600px; /*height of body items...*/
 }
 
@@ -460,7 +465,7 @@ body {
 
 /*onhover: grow*/
 .grow {    
-	transform: scale(1.2, 1.2)!important;
+	transform: scale(1.4, 1.4);
 	z-index: 11 !important;
     transition: 0.15s cubic-bezier(0.47, 0, 0.745, 0.715) !important; /*in out different transitions... robert penner: https://easings.net/#easeInSine gray rectangle on text using touch screen? remove?*/
 }
