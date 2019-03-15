@@ -5,6 +5,7 @@
 		"DOM_name": "GreatWallOfJS0",
 		"properties":
 		{
+			"text-dir":"ANUS",
 			"num-elems": "50",
 			"justify-content": "align-content-start",
 			"className" : "buttonBrick",
@@ -13,6 +14,7 @@
 			"mouseleave":"onButtonBrickHoverOut",
 			"cssSelected":"buttonBrickSelected",
 			"multiSelect":"false",
+			"text_dir":"json/lang1/",
 			"css":[
 				{
 					"display":"flex",

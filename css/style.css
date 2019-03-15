@@ -293,7 +293,7 @@ table td {
 
 
 .buttonBrickSelected {
-    transition: 0.25s linear !important; /*in out different transitions*/
+    transition: 0.25s cubic-bezier(0.47, 0, 0.745, 0.715) !important; /*in out different transitions*/
 	display:flex;
 	font-family:Dosis;
 	color:#FFFFFF !important;
@@ -311,7 +311,7 @@ table td {
   position: absolute;
   margin: 0;
 	border-radius:25px;
-  transition: 0.45s linear; /*easing fade back, slightly faster*/
+  transition: 0.45s cubic-bezier(0.47, 0, 0.745, 0.715); /*easing fade back, slightly faster*/
   transform: scale(1.0, 1.0);
   align-items: center !important;
 }

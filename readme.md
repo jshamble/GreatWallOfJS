@@ -1,4 +1,4 @@
-The Great Wall Of JS: Build like the Great wall of china, a multi-purpose grid library using flexbox.
+The Great Wall Of JS: Built sturdy like the Great wall of china, a multi-purpose grid library using flexbox and flex wrap.
 
 
 (has video and audio recorder / exporter)
@@ -30,3 +30,6 @@ i.e.
 .buttonBrick{
 	margin: 2.2em 2.2em 2.2em 2.2em;
 }
+
+
+support property inheritance (proprties can be manually overriden as well when inherited...)

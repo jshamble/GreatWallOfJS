@@ -104,7 +104,7 @@ function ease(progress) {
 function onButtonBrickSelected(id)
 {
 	
-	 let flex_container = document.getElementById(id[0].flex_container_id);
+	let flex_container = document.getElementById(id[0].flex_container_id);
 	 
 	let elem = id[1];//document.getElementById(id[0].id);
 	
@@ -232,11 +232,10 @@ function getTextWidth(text, font) {
     return metrics.width;
 }
 
-function loadGreatWall(config_main, config_color)
+function buildGreatWall(config_main,config_color,config_text,k)
 {
-	//for each html node
-	for(let k = 0; k < config_main["HTMLNodes"].length; k++)
-	{
+		lines = config_text.split(/\//);
+		
 		currentlySelectedAlignIndex = k;
 		
 		if( config_main["HTMLNodes"][k]["parent"] != null)
@@ -262,7 +261,8 @@ function loadGreatWall(config_main, config_color)
 				let item_brick_inner = document.createElement("div");
 				
 				item_brick_inner.className = "item-content";
-				item_brick_inner.innerText = z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999;
+				
+				item_brick_inner.innerText = lines[z % lines.length].trim();//z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999;
 				item_brick_inner.id = config_main["HTMLNodes"][k]["DOM_name"] + z;
 				item_brick_inner.classPreserved = item_brick_inner.className;
 				
@@ -275,6 +275,8 @@ function loadGreatWall(config_main, config_color)
 				if( config_main["HTMLNodes"][k]["properties"]["cssSelected"] != null)
 					item_brick_inner.cssSelected = config_main["HTMLNodes"][k]["properties"]["cssSelected"];
 				
+					 
+				
 				for (var key in config_main["HTMLNodes"][k]["properties"]["css"][0]) {
 					if (config_main["HTMLNodes"][k]["properties"]["css"][0].hasOwnProperty(key)) 
 					{
@@ -285,20 +287,12 @@ function loadGreatWall(config_main, config_color)
 						//same as line below...
 						else if (key == "width")
 						{
-							//alert(getTextWidth("a",config_main["HTMLNodes"][k]["properties"]["font"]));
 							let textWidth = getTextWidth(item_brick_inner.innerText,config_main["HTMLNodes"][k]["properties"]["font"]);
-							//item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
-							//item_brick_outer.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
 							if(textWidth < 40.0)
 							{
 								item_brick_inner.style[key] = "50px";//config_main["HTMLNodes"][k]["properties"]["css"][0][key];
 								//item_brick_outer.style[key] = "50px";//config_main["HTMLNodes"][k]["properties"]["css"][0][key];
 							}
-							//else
-							//{
-								//item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
-								//item_brick_outer.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
-							//}
 						}
 						else if (key == "height")
 						{
@@ -319,38 +313,61 @@ function loadGreatWall(config_main, config_color)
 					}
 				}
 				
+				//make text-unslectable instide button:
+				item_brick_outer.style["user-select"] = "none";
+				
 				item_brick_outer.appendChild(item_brick_inner);
 				flex_container.appendChild(item_brick_outer);
 				
 				flex_container.children[z].children[0].flex_container_id = flex_container.id;
-				
-				//alert(flex_container.childNodes[z].childNodes[0].id);
 				
 				if( config_main["HTMLNodes"][k]["properties"]["onClick"] != null)
 					item_brick_inner.setAttribute("onClick", config_main["HTMLNodes"][k]["properties"]["onClick"]+"("+flex_container.children[z].children[0].id+");" );
 				
 				 
 			}
-			
 			document.getElementById(config_main["HTMLNodes"][k]["DOM_name"]).appendChild(flex_container);
 		}
 		
-		/*if( config_main["HTMLNodes"][k]["properties"]["justify-content"] != null )
-		{
-			
-			<div class="flex-container align-content-start" id="alignContent0">
-							<div class="item" data-color="1bbc9d">
-								<div class="textInner">1</div>
-							</div> 
-					
-			
-			document.getElementById( "alignContent" + k ).className = "flex-container " + config_main["HTMLNodes"][k]["properties"]["justify-content"];
-		}*/
+		return new Promise((resolve, reject) => { 
+		setTimeout(() => {
+			resolve();
+		}, 10);
+		});
+}
+		
+function prepareBricksForGreatWall(config_main, config_color)
+{
+	//for each html node
+	
+	for(let k = 0; k < config_main["HTMLNodes"].length; k++)
+	{
+		if( config_main["HTMLNodes"][k]["properties"][ "text_dir" ] != null )
+		{			
+			request({url: ".\\" +  config_main["HTMLNodes"][k]["properties"]["text_dir"] + supported_languages.get(selected_language_name) + "\\script.md"})
+			.then(config_text => {
+				buildGreatWall(config_main, config_color, config_text, k);
+			})
+			.catch(error => {
+				console.log(error);
+			});
+		}
 	}
 	
-	//call layout afterwards
-	updateAnimationWall();
-	layout();
+	 return new Promise(function (fulfilled, rejected) {
+
+        let name = "John Doe";
+
+        // wait 3000 milliseconds before calling fulfilled() method
+        setTimeout ( 
+            function() {
+                fulfilled( name )
+            }, 
+            300
+        )
+
+    })
+	
 }
 
 document.addEventListener('DOMContentLoaded', function(e)
@@ -361,7 +378,16 @@ document.addEventListener('DOMContentLoaded', function(e)
 		
 		request({url: "./json/config_main.json"})
 		.then(data => {
-			loadGreatWall(JSON.parse(data), JSON.parse(data_color) );
+			
+			prepareBricksForGreatWall(JSON.parse(data), JSON.parse(data_color) ).then(
+			text_data => {
+				
+				//call layout afterwards... make sure to return promises above first...
+				updateAnimationWall();
+				layout();
+			
+			})
+			
 		})
 		.catch(error => {
 			console.log(error);
@@ -467,4 +493,69 @@ function updateAnimationWall()
 	  
 	  boxes[i] = { content, height, node, transform, width, x, y };
 	} 
+}
+
+
+//make it so that you can linkto multiple directories... depeding on the directory you choose.
+//script_directory in json file
+ 
+var supported_languages = new Map([["English", "en"], ["日本語", "jp"], ["한글", "kr"]]);
+var selected_language_name = "English";
+
+function getFileOrDirectoryFromServer(url, filetype, doneCallback){
+   var promiseObj = new Promise(function(resolve, reject){
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", url, true);
+	  
+	  xhr.send();
+
+      xhr.onreadystatechange = function(){
+      if (xhr.readyState === 4){
+         if (xhr.status === 200){
+            //console.log("xhr done successfully");
+            var resp = xhr.responseText;
+            var respJson;
+			if(filetype.toLowerCase() == "xml")
+			{
+				doneCallback($($.parseXML(resp)));
+			}
+			else if(filetype.toLowerCase() == "string")
+			{
+				doneCallback(resp);
+			}
+			else //JSON
+			{
+				respJson = JSON.parse(resp);
+				doneCallback(respJson);
+			}
+         } else {
+            reject(xhr.status);
+            //console.log("xhr failed");
+         }
+      } else {
+         //console.log("xhr processing going on");
+      }
+   }
+   //console.log("request sent succesfully");
+ });
+ return promiseObj;
+}
+
+function createDataArrays(filename, datatype, filetype)
+{    
+		getFileOrDirectoryFromServer(filename, datatype, function(file_and_dir_names) 
+		{
+			if (file_and_dir_names == null) 
+			{
+				alert("An error occured, file could not be read in function createDataArrays(). Please Email the Developer about this issue");
+			}
+			else 
+			{
+				if(filetype == "script")
+				{
+					script_buffer_map = file_and_dir_names.split("/");
+				}
+				
+			}
+		});
 }
