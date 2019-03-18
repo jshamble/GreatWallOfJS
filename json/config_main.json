@@ -79,7 +79,6 @@
 					"text-align": "center",
 					"justify-content": "center",
 					"border": "2px solid #4CAF50",
-					"white-space" : "nowrap",
 					"img_padding" : "10px",
 					"plus_margin":"0 0 0 5px",
 					"plus_padding":"0 4px 0 4px"
@@ -89,12 +88,10 @@
 				{
 					"display":"flex",
 					"flex-flow": "row",
-					"img_width": "100px",
-					"img_height": "100px",
 					"font":"bold 16pt Dosis",
 					"color":"#FFFFFF",
 					"border-radius":"25px",
-					"cursor":"pointer",
+					"z-index":"250",
 					"text-align": "center",
 					"align-items": "center",
 					"justify-content": "center",

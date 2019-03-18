@@ -291,7 +291,8 @@ function onButtonImgHover()
 	
 	let elem = this;
  
-	elem.style["z-index"] = "11";
+	//elem.style["z-index"] = "11";
+	//alert(elem.classList);
 	
 	if(!elem.classList.contains("grow"))
 	{
@@ -307,7 +308,7 @@ function onButtonImgHoverOut()
 	//item buttonBrick item-content
 	//alert(elem.classList)
 		
-	elem.style["z-index"] = "0";
+	//elem.style["z-index"] = "0";
 	if(elem.classList.contains("grow"))
 	{
 		elem.classList.remove("grow");
@@ -658,13 +659,13 @@ function prepareBricksForGreatWall(config_main, config_color)
 	 return new Promise(function (fulfilled, rejected) {
 
         let name = "John Doe";
-
+		/// button arrangement bug, will go away in serve once callbacks are set to sequential.
         // wait 3000 milliseconds before calling fulfilled() method
         setTimeout ( 
             function() {
                 fulfilled( name )
             }, 
-            600
+            500
         )
 
     })
@@ -780,7 +781,14 @@ function updateAnimationWall()
 	  // Need another element to animate width & height... use clone instead of editing HTML
 	  var content = node.cloneNode(true);
 	  if(!content.classList.contains("image_button"))
+	  {
 		content.classList.add("item-content");
+		//if (content.firstChild) {
+			//content.children[0].style.display = "none";
+			//content.removeChild(content.firstChild);
+		//}
+		
+	  }
 	  else
 	  {
 		  //specific cases for image-wall children...
@@ -789,8 +797,8 @@ function updateAnimationWall()
 		//alert(content.children.length);
 		
 		if (content.firstChild) {
+			//content.children[0].style.display = "none";
 			content.children[0].style.visibility = "hidden";
-			//content.children[2].style.visibility = "hidden";
 			//content.removeChild(content.firstChild);
 		}
 		

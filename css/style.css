@@ -245,7 +245,7 @@ body div[id^='row']
 	margin: 1.2em 0.5em 1.2em 0.5em; /*top right bottom left*/
 }
 
-.buttonBrick > div, .item-content{
+.buttonBrick > div, .item-content {
 	padding: 10px 10px !important;
 	text-align: center !important;
 	justify-content: center !important;
@@ -282,20 +282,14 @@ body div[id^='row']
   transition: 0.45s cubic-bezier(0.47, 0, 0.745, 0.715); /*easing fade back, slightly faster*/
   transform: scale(1.0, 1.0);
   align-items: center !important;
+  z-index: 11 !important;
 }
 
 
 .item-content-img-anim {
   position: absolute !important;
   margin: 0;
-  z-index: -1;
-  align-items: center !important;
-}
-
-.item-content-img-anim > div {
-  width: 0px;
-}
-
+} 
 
 
 
@@ -484,10 +478,6 @@ body {
   padding-top: 35px;
 }
 
-
-#flexBasis {
-	visibility: hidden;
-}
 
 /*button states: onhover and onclick*/
 
