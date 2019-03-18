@@ -238,7 +238,11 @@ body div[id^='row']
 } 
 
 .buttonBrick{
-	margin: 2.2em 2.2em 2.2em 2.2em;
+	margin: 0.2em 3.2em 0.2em 3.2em; /*top right bottom left*/
+}
+
+.image_button {
+	margin: 1.2em 0.5em 1.2em 0.5em; /*top right bottom left*/
 }
 
 .buttonBrick > div, .item-content{
@@ -269,6 +273,31 @@ body div[id^='row']
   transform: scale(1.0, 1.0);
   align-items: center !important;
 }
+
+
+.item-content-img {
+  position: relative !important;
+  margin: 0;
+  border-radius:10px;
+  transition: 0.45s cubic-bezier(0.47, 0, 0.745, 0.715); /*easing fade back, slightly faster*/
+  transform: scale(1.0, 1.0);
+  align-items: center !important;
+}
+
+
+.item-content-img-anim {
+  position: absolute !important;
+  margin: 0;
+  z-index: -1;
+  align-items: center !important;
+}
+
+.item-content-img-anim > div {
+  width: 0px;
+}
+
+
+
 
 #direction .item {
   flex-wrap: wrap;
@@ -304,12 +333,11 @@ body div[id^='alignContent'] .item {
   white-space: nowrap;
 }
 
-
-@media only screen and (max-width: 1600px) {
-  .item {
 	/*width: 50px;*/
     /*width: 25%; 25% = 4 items per row... calculate it by 1/n, where N is the number of items you would like per row*/
-    width: 5%;
+@media only screen and (max-width: 1600px) {
+  .item {
+    width: 10%;
 	height: 50px;
   }
   .principal {
@@ -465,8 +493,7 @@ body {
 
 /*onhover: grow*/
 .grow {    
-	transform: scale(1.4, 1.4);
-	z-index: 11 !important;
+	transform: scale(1.4, 1.4) !important;
     transition: 0.15s cubic-bezier(0.47, 0, 0.745, 0.715) !important; /*in out different transitions... robert penner: https://easings.net/#easeInSine gray rectangle on text using touch screen? remove?*/
 }
 
@@ -514,8 +541,13 @@ body {
 }
 
 .ripple-out {
-  position: absolute;
+  position: relative;
 }
+
+.ripple-in {
+  position: relative;
+}
+
 .ripple-out:before {
   content: '';
   position: absolute;
@@ -581,9 +613,6 @@ body {
   }
 }
 
-.ripple-in {
-  position: absolute;
-}
 
 .ripple-in:before 
 {

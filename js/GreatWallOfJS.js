@@ -103,7 +103,6 @@ function ease(progress) {
 //can keep an array of sleected ids here in this function below (depending if multiselect is true or false...)...
 function onButtonBrickSelected(id)
 {
-	
 	let flex_container = document.getElementById(id[0].flex_container_id);
 	 
 	let elem = id[1];//document.getElementById(id[0].id);
@@ -174,11 +173,91 @@ function onButtonBrickSelected(id)
 	
 }
 
+function onClickPlus(id)
+{
+	//let flex_container = document.getElementById(id.flex_container_id);
+	 
+	 //plus button clicked... (add to favroties / pop-up sidebar with more info about the comic...)
+	 
+	 //alert(id);
+	
+	let elem = id[0];//document.getElementById(id[0].id);
+	
+	/*if( flex_container.multiSelect != "true")
+	{ 
+		//deselect all buttons  // flex_container.multiSelect
+		for(let z = 0; z < id.parentNode.parentNode.childNodes.length; z++)
+		{
+			//gets the nubmer and appends it to the front for a unique I.D. for each of the "Plus" symbols...  
+			let childNode = document.getElementById(id.parentNode.parentNode.childNodes[z].childNodes[1].childNodes[1].id);
+			if(elem.id != childNode.id && childNode.classList.contains(id.cssSelected) )
+				//alert(id[0].parentNode.parentNode.childNodes[z].classList);
+			{ 
+				childNode.classList.remove(id.cssSelected);
+				
+				/// make a similar case here, except check if selected above...
+				if(!childNode.classList.contains("ripple-out"))
+				{ 
+					childNode.className = 
+					"ripple-out" + " " + childNode.className;  
+				}
+				//timeout after 1 second... (must match css...)
+				setTimeout(function() { 
+
+					if(childNode.classList.contains("ripple-out"))
+					{
+						childNode.classList.remove("ripple-out");
+					}
+					
+				}, 200);
+				
+			}
+		}
+	}*/
+
+
+	let ripple_effect = "ripple-out";
+	
+	if(!elem.classList.contains(id.cssSelected))
+	{
+		elem.className += " " + id.cssSelected; 
+		elem.classPreserved = elem.className;
+		ripple_effect = "ripple-out";//yes, this is done on purpose to always have the ripple out effect...
+	}
+	else
+	{
+		elem.classList.remove(id.cssSelected);
+	}
+	
+	
+	/// make a similar case ehre, except check if selected above...
+	if(!elem.classList.contains(ripple_effect))
+	{
+		elem.className = ripple_effect + " " + elem.className; 
+	}
+	//timeout after 1 second... (must match css...)
+	setTimeout(function() { 
+
+		if(elem.classList.contains(ripple_effect))
+		{
+			elem.classList.remove(ripple_effect);
+			//elem.className = elem.classPreserved;
+		}
+		
+	}, 200);
+
+	
+	
+}
+
+
 function onButtonBrickHover()
 {
 	//alert(this.children.length);
 	
 	let elem = this;
+
+	elem.style["z-index"] = "11";
 	
 	elem = this.children[1];
 	if(!elem.classList.contains("grow"))
@@ -192,15 +271,59 @@ function onButtonBrickHover()
 function onButtonBrickHoverOut()
 { 
 	let elem = this;
+		
+	 
+	elem.style["z-index"] = "0";
 	
 	elem = this.children[1];
 	if(elem.classList.contains("grow"))
 	{
-		this.children[1].classList.remove("grow");
+		elem.classList.remove("grow");
 		//elem.className = elem.classPreserved;
+	}
+}
+
+
+
+function onButtonImgHover()
+{
+	//alert(this.children.length);
+	
+	let elem = this;
+ 
+	elem.style["z-index"] = "11";
+	
+	if(!elem.classList.contains("grow"))
+	{
+		elem.classPreserved = elem.className;
+		elem.className = "grow " + elem.className; 
 	}
 	
 }
+
+function onButtonImgHoverOut()
+{ 
+	let elem = this; 
+	//item buttonBrick item-content
+	//alert(elem.classList)
+		
+	elem.style["z-index"] = "0";
+	if(elem.classList.contains("grow"))
+	{
+		elem.classList.remove("grow");
+		//elem.className = elem.classPreserved;
+	}
+}
+
+function onImgSelected(id)
+{
+	let flex_container = document.getElementById(id.flex_container_id);
+	 
+	let elem = id;
+	
+	//alert("Img selected, goto homepage.");
+}
+
 
 function getTextWidth(text, font) {
     // re-use canvas object for better performance
@@ -211,7 +334,7 @@ function getTextWidth(text, font) {
     return metrics.width;
 }
 
-function buildGreatWall(config_main,config_color,config_text,k)
+function buildGreatWall(config_main,config_color,config_text,k,image_name_list)
 {
 		lines = config_text.split(/\//);
 		
@@ -220,90 +343,236 @@ function buildGreatWall(config_main,config_color,config_text,k)
 		
 		if( config_main["HTMLNodes"][k]["properties"]["justify-content"] != null )
 		{
-			let flex_container = document.createElement("div");
-			flex_container.id = "alignContent" + k;
-			flex_container.className = "flex-container " + config_main["HTMLNodes"][k]["properties"]["justify-content"];
-			
-			if( config_main["HTMLNodes"][k]["properties"]["multiSelect"] != null)
+			if(config_main["HTMLNodes"][k]["properties"]["display_type"] == "image")
 			{
-				flex_container.multiSelect = config_main["HTMLNodes"][k]["properties"]["multiSelect"];
-			}
+				let flex_container = document.createElement("div");
+				flex_container.id = "alignContent" + k;
+				flex_container.className = "flex-container " + config_main["HTMLNodes"][k]["properties"]["justify-content"];
 				
-			for(let z = 0; z < config_main["HTMLNodes"][k]["properties"]["num-elems"]; z++)
-			{ 
-				let item_brick_outer = document.createElement("div");
-				
-				item_brick_outer.className = "item" + " " + config_main["HTMLNodes"][k]["properties"]["className"];
-				item_brick_outer.classPreserved = item_brick_outer.className;
-				let item_brick_inner = document.createElement("div");
-				
-				item_brick_inner.className = "item-content";
-				
-				item_brick_inner.innerText = lines[z % lines.length].trim();//z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999;
-				item_brick_inner.id = config_main["HTMLNodes"][k]["DOM_name"] + z;
-				item_brick_inner.classPreserved = item_brick_inner.className;
-				
-				//for passing in params via onlick//document.getElementById( "myID" ).setAttribute( "onClick", "myFunction("+VALUE+");" );
-				
-				if( config_main["HTMLNodes"][k]["properties"]["mouseenter"] != null)
-					item_brick_outer.addEventListener("mouseenter", window[config_main["HTMLNodes"][k]["properties"]["mouseenter"]]);
-				if( config_main["HTMLNodes"][k]["properties"]["mouseleave"] != null)
-					item_brick_outer.addEventListener("mouseleave", window[config_main["HTMLNodes"][k]["properties"]["mouseleave"]]);
-				if( config_main["HTMLNodes"][k]["properties"]["cssSelected"] != null)
-					item_brick_inner.cssSelected = config_main["HTMLNodes"][k]["properties"]["cssSelected"];
-				
-					 
-				
-				for (var key in config_main["HTMLNodes"][k]["properties"]["css"][0]) {
-					if (config_main["HTMLNodes"][k]["properties"]["css"][0].hasOwnProperty(key)) 
+				if( config_main["HTMLNodes"][k]["properties"]["multiSelect"] != null)
+				{
+					flex_container.multiSelect = config_main["HTMLNodes"][k]["properties"]["multiSelect"];
+				}
+					
+				for(let z = 0; z < config_main["HTMLNodes"][k]["properties"]["num-elems"]; z++)
+				{ 
+					let item_brick_outer = document.createElement("div");
+					
+					item_brick_outer.className = "item" + " " + config_main["HTMLNodes"][k]["properties"]["className"];
+					item_brick_outer.classPreserved = item_brick_outer.className;
+					let item_brick_inner = document.createElement("div");
+					
+					let item_brick_img = document.createElement("img");
+					//instead of item_brick innder, give item_brick_img item_brick_inner's ID...
+					item_brick_img.id = config_main["HTMLNodes"][k]["DOM_name"] + z;
+					item_brick_img.src = config_main["HTMLNodes"][k]["properties"]["img_dir"] + image_name_list[z % image_name_list.length];
+					
+					if(config_main["HTMLNodes"][k]["properties"]["css"][0]["img-padding"] != null)
 					{
-						if(key == "border")
-						{ 
-							item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
-						}
-						//same as line below...
-						else if (key == "width")
+						item_brick_img.style.padding = config_main["HTMLNodes"][k]["properties"]["css"][0]["img-padding"];
+					}
+					
+					//item_brick_inner.className = "item-content";
+					item_brick_img.className = "item-content-img";
+					
+					item_brick_inner.innerText = lines[z % lines.length].trim();//z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999;
+					//item_brick_inner.id = z + config_main["HTMLNodes"][k]["DOM_name"] + z;
+					item_brick_inner.classPreserved = item_brick_inner.className;
+					
+					let item_brick_inner_plus = document.createElement("div");
+					item_brick_inner_plus.id = config_main["HTMLNodes"][k]["DOM_name"] + z + "_" + z; // Note html IDs cannot start with numbers... use "underscore" instead
+					item_brick_inner_plus.innerText = "+";//z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999;
+					//item_brick_inner_plus.id = config_main["HTMLNodes"][k]["DOM_name"] + z;
+					item_brick_inner_plus.classPreserved = item_brick_inner_plus.className;
+					
+					
+					//for passing in params via onlick//document.getElementById( "myID" ).setAttribute( "onClick", "myFunction("+VALUE+");" );
+					
+					if( config_main["HTMLNodes"][k]["properties"]["mouseenter"] != null)
+						item_brick_img.addEventListener("mouseenter", window[config_main["HTMLNodes"][k]["properties"]["mouseenter"]]);
+					if( config_main["HTMLNodes"][k]["properties"]["mouseleave"] != null)
+						item_brick_img.addEventListener("mouseleave", window[config_main["HTMLNodes"][k]["properties"]["mouseleave"]]);
+					if( config_main["HTMLNodes"][k]["properties"]["cssSelected"] != null)
+						item_brick_img.cssSelected = config_main["HTMLNodes"][k]["properties"]["cssSelected"];
+					
+						 
+					
+					for (var key in config_main["HTMLNodes"][k]["properties"]["css"][0]) 
+					{
+						if (config_main["HTMLNodes"][k]["properties"]["css"][0].hasOwnProperty(key)) 
 						{
-							let textWidth = getTextWidth(item_brick_inner.innerText,config_main["HTMLNodes"][k]["properties"]["font"]);
-							if(textWidth < 40.0)
+							if(key == "border")
+							{ 
+								//item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+								item_brick_inner_plus.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+								
+							}
+							//same as line below...
+							else if (key == "width")
 							{
-								//item_brick_inner.style[key] = "50px";//config_main["HTMLNodes"][k]["properties"]["css"][0][key];
-								//item_brick_outer.style[key] = "50px";//config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+								let textWidth = getTextWidth(item_brick_inner.innerText,config_main["HTMLNodes"][k]["properties"]["font"]);
+								if(textWidth < 40.0)
+								{
+									//item_brick_inner.style[key] = "50px";//config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+									//item_brick_outer.style[key] = "50px";//config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+								}
+							}
+							else if(key == "img_width" || key == "img_height" )
+							{
+									let split_after = key.split("_");
+									item_brick_img.style[split_after[1]] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+							}
+							else if (key == "height" || key == "width" )
+							{
+									//item_brick_outer.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+							}
+							else if (key == "color" || key == "background-color")
+							{ 
+								item_brick_inner_plus.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+								//item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+								item_brick_outer.style[key] = "rgba(255,255,255,0.0)";
+							}
+							else if(key == "flex-flow")
+							{								
+								item_brick_outer.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+								item_brick_outer.style["display"] = "flex";
+							}
+							//could use if key.cloantins "_"
+							else if(key == "plus_padding" || key == "plus_margin")
+							{
+								//plus padding and margin
+								
+									let split_after = key.split("_");
+									item_brick_inner_plus.style[split_after[1]] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+							}
+							else
+							{
+								item_brick_inner_plus.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+								item_brick_outer.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+								//item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
 							}
 						}
-						else if (key == "height")
+					}
+					
+					for (var key in config_main["HTMLNodes"][k]["properties"]["css-text"][0]) 
+					{
+						if (config_main["HTMLNodes"][k]["properties"]["css-text"][0].hasOwnProperty(key)) 
 						{
-								item_brick_outer.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
-							
-						}
-						else if (key == "color" || key == "background-color")
-						{
-							
-							item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
-							item_brick_outer.style[key] = "rgba(255,255,255,0.0)";
-						}
-						else
-						{
-							item_brick_outer.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
-							item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+								item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css-text"][0][key];
 						}
 					}
+					
+					//make text-unslectable instide button:
+					item_brick_outer.style["user-select"] = "none";
+					//
+					item_brick_inner.style["position"] = "relative";
+					item_brick_inner_plus.flex_container_id = flex_container.id;
+					item_brick_inner.appendChild(item_brick_inner_plus); // 1 -> 1 
+					item_brick_outer.appendChild(item_brick_img); // 0
+					item_brick_outer.appendChild(item_brick_inner); // 1
+					//add item item_brick_plus
+					flex_container.appendChild(item_brick_outer);
+					
+					flex_container.children[z].children[0].flex_container_id = flex_container.id;
+					
+					if( config_main["HTMLNodes"][k]["properties"]["onClick"] != null)
+						item_brick_img.setAttribute("onClick", config_main["HTMLNodes"][k]["properties"]["onClick"]+"("+flex_container.children[z].children[0].id+");" );
+					if( config_main["HTMLNodes"][k]["properties"]["onClickPlus"] != null)
+					{
+						item_brick_inner_plus.setAttribute("onClick", config_main["HTMLNodes"][k]["properties"]["onClickPlus"]+"("+flex_container.children[z].children[0].id+"_"+z+");" );
+					}
+					
 				}
-				
-				//make text-unslectable instide button:
-				item_brick_outer.style["user-select"] = "none";
-				
-				item_brick_outer.appendChild(item_brick_inner);
-				flex_container.appendChild(item_brick_outer);
-				
-				flex_container.children[z].children[0].flex_container_id = flex_container.id;
-				
-				if( config_main["HTMLNodes"][k]["properties"]["onClick"] != null)
-					item_brick_inner.setAttribute("onClick", config_main["HTMLNodes"][k]["properties"]["onClick"]+"("+flex_container.children[z].children[0].id+");" );
-				
-				 
+				document.getElementById(config_main["HTMLNodes"][k]["DOM_name"]).appendChild(flex_container);
 			}
-			document.getElementById(config_main["HTMLNodes"][k]["DOM_name"]).appendChild(flex_container);
+			else
+			{
+				let flex_container = document.createElement("div");
+				flex_container.id = "alignContent" + k;
+				flex_container.className = "flex-container " + config_main["HTMLNodes"][k]["properties"]["justify-content"];
+				
+				if( config_main["HTMLNodes"][k]["properties"]["multiSelect"] != null)
+				{
+					flex_container.multiSelect = config_main["HTMLNodes"][k]["properties"]["multiSelect"];
+				}
+					
+				for(let z = 0; z < config_main["HTMLNodes"][k]["properties"]["num-elems"]; z++)
+				{ 
+					let item_brick_outer = document.createElement("div");
+					
+					item_brick_outer.className = "item" + " " + config_main["HTMLNodes"][k]["properties"]["className"];
+					item_brick_outer.classPreserved = item_brick_outer.className;
+					let item_brick_inner = document.createElement("div");
+					
+					item_brick_inner.className = "item-content";
+					
+					item_brick_inner.innerText = lines[z % lines.length].trim();//z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999;
+					item_brick_inner.id = config_main["HTMLNodes"][k]["DOM_name"] + z;
+					item_brick_inner.classPreserved = item_brick_inner.className;
+					
+					//for passing in params via onlick//document.getElementById( "myID" ).setAttribute( "onClick", "myFunction("+VALUE+");" );
+					
+					if( config_main["HTMLNodes"][k]["properties"]["mouseenter"] != null)
+						item_brick_outer.addEventListener("mouseenter", window[config_main["HTMLNodes"][k]["properties"]["mouseenter"]]);
+					if( config_main["HTMLNodes"][k]["properties"]["mouseleave"] != null)
+						item_brick_outer.addEventListener("mouseleave", window[config_main["HTMLNodes"][k]["properties"]["mouseleave"]]);
+					if( config_main["HTMLNodes"][k]["properties"]["cssSelected"] != null)
+						item_brick_inner.cssSelected = config_main["HTMLNodes"][k]["properties"]["cssSelected"];
+					
+						 
+					
+					for (var key in config_main["HTMLNodes"][k]["properties"]["css"][0]) {
+						if (config_main["HTMLNodes"][k]["properties"]["css"][0].hasOwnProperty(key)) 
+						{
+							if(key == "border")
+							{ 
+								item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+							}
+							//same as line below...
+							else if (key == "width")
+							{
+								let textWidth = getTextWidth(item_brick_inner.innerText,config_main["HTMLNodes"][k]["properties"]["font"]);
+								if(textWidth < 40.0)
+								{
+									//item_brick_inner.style[key] = "50px";//config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+									//item_brick_outer.style[key] = "50px";//config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+								}
+							}
+							else if (key == "height")
+							{
+									item_brick_outer.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+								
+							}
+							else if (key == "color" || key == "background-color")
+							{
+								
+								item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+								item_brick_outer.style[key] = "rgba(255,255,255,0.0)";
+							}
+							else
+							{
+								item_brick_outer.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+								item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+							}
+						}
+					}
+					
+					//make text-unslectable instide button:
+					item_brick_outer.style["user-select"] = "none";
+					
+					item_brick_outer.appendChild(item_brick_inner);
+					flex_container.appendChild(item_brick_outer);
+					
+					flex_container.children[z].children[0].flex_container_id = flex_container.id;
+					
+					if( config_main["HTMLNodes"][k]["properties"]["onClick"] != null)
+						item_brick_inner.setAttribute("onClick", config_main["HTMLNodes"][k]["properties"]["onClick"]+"("+flex_container.children[z].children[0].id+");" );
+					
+					 
+				}
+				document.getElementById(config_main["HTMLNodes"][k]["DOM_name"]).appendChild(flex_container);
+			}
+			
 		}
 		
 		return new Promise((resolve, reject) => { 
@@ -333,13 +602,58 @@ function prepareBricksForGreatWall(config_main, config_color)
 		{			
 			request({url: ".\\" +  config_main["HTMLNodes"][k]["properties"]["text_dir"] + supported_languages.get(selected_language_name) + "\\script.md"})
 			.then(config_text => {
-				buildGreatWall(config_main, config_color, config_text, k);
+								
+				if( config_main["HTMLNodes"][k]["properties"][ "img_dir" ] != null )
+				{			
+					request({url: ".\\" +  config_main["HTMLNodes"][k]["properties"]["img_dir"] })
+					.then(config_img => {
+						
+						let parser=new DOMParser();
+						let htmlDoc=parser.parseFromString(config_img, "text/html");
+						let script_elems = htmlDoc.getElementsByTagName('script');
+						let re = /,".*(.jpg|.png|.ogv|.mp4)/; // /\(".*.js","/;
+							
+						//if we find matching filenames in the directory's inner html...
+						
+						let image_name_list = []
+						
+						for(var i = 0; i < script_elems.length; i++)
+						{
+							//regex 1: addRow("
+							//regex 2: .js"
+							let str = script_elems[i].innerHTML;
+							//matches img files .jpg .png
+							let found = str.match(re);
+							if(found !== undefined && found !== null)
+							{
+								 var image_name = found[0].substring(2,found[0].length-4);
+								 var image_name_with_extension = found[0].substring(2,found[0].length);
+								 
+								image_name_list.push(image_name_with_extension);
+							} 
+						}
+						
+						
+						buildGreatWall(config_main, config_color, config_text,k,image_name_list);
+					})
+					.catch(error => {
+						console.log(error);
+					});
+				}
+				else
+				{
+					buildGreatWall(config_main, config_color, config_text,k);
+				}
+				
 			})
 			.catch(error => {
 				console.log(error);
 			});
 		}
+		
+		
 	}
+	 
 	
 	 return new Promise(function (fulfilled, rejected) {
 
@@ -350,7 +664,7 @@ function prepareBricksForGreatWall(config_main, config_color)
             function() {
                 fulfilled( name )
             }, 
-            100
+            600
         )
 
     })
@@ -362,14 +676,13 @@ document.addEventListener('DOMContentLoaded', function(e)
 {
 	request({url: "./json/config_color.json"})
     .then(data_color => {
-		
+		let config_color = JSON.parse(data_color);
 		request({url: "./json/config_main.json"})
 		.then(data => {
-			
-			prepareBricksForGreatWall(JSON.parse(data), JSON.parse(data_color) ).then(
+			let config_main = JSON.parse(data);
+			prepareBricksForGreatWall(config_main, config_color).then(
 			text_data => {
 				
-				//call layout afterwards... make sure to return promises above first...
 				updateAnimationWall();
 				layout();
 			
@@ -452,7 +765,7 @@ for (var flexShrink = document.querySelectorAll(".flex-shrink"), j = 0; j < flex
 function updateAnimationWall()
 {
 	//
-	// ANIMATIONS
+	// ANIMATIONS -> rmember, these add cloned children, be careful with animations
 	// ===========================================================================
 	//var inputs = document.querySelectorAll("input");
 	nodes = document.querySelectorAll(".item");
@@ -466,14 +779,29 @@ function updateAnimationWall()
 		
 	  // Need another element to animate width & height... use clone instead of editing HTML
 	  var content = node.cloneNode(true);
-	  content.classList.add("item-content");
+	  if(!content.classList.contains("image_button"))
+		content.classList.add("item-content");
+	  else
+	  {
+		  //specific cases for image-wall children...
+		  content.classList.add("item-content-img-anim");
+		//content.classList.add("item-content-img");
+		//alert(content.children.length);
+		
+		if (content.firstChild) {
+			content.children[0].style.visibility = "hidden";
+			//content.children[2].style.visibility = "hidden";
+			//content.removeChild(content.firstChild);
+		}
+		
+	  }
 	  
 	  TweenLite.set(node, { x: "+=0" });
 	  TweenLite.set(content, { width, height });  
 	  TweenLite.set([node, node.children], { backgroundColor: color, color });
 	  
 	  node.appendChild(content);
-		
+	  
 	  var transform = node._gsTransform;
 	  var x = node.offsetLeft;
 	  var y = node.offsetTop;
