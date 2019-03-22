@@ -179,8 +179,6 @@ function onClickPlus(id)
 	 
 	 //plus button clicked... (add to favroties / pop-up sidebar with more info about the comic...)
 	 
-	 //alert(id);
-	
 	let elem = id[0];//document.getElementById(id[0].id);
 	
 	/*if( flex_container.multiSelect != "true")
@@ -287,32 +285,56 @@ function onButtonBrickHoverOut()
 
 function onButtonImgHover()
 {
-	//alert(this.children.length);
 	
+	//img transform
 	let elem = this;
  
-	//elem.style["z-index"] = "11";
-	//alert(elem.classList);
-	
 	if(!elem.classList.contains("grow"))
 	{
 		elem.classPreserved = elem.className;
 		elem.className = "grow " + elem.className; 
 	}
 	
+	//text/button transform
+	/*let elem_child = this.parentNode.children[1];
+	
+	elem_child.style["transition"] = "0.45s cubic-bezier(0.47, 0, 0.745, 0.715)";
+ 
+	if(!elem_child.classList.contains("grow"))
+	{
+		elem_child.classPreserved = elem_child.className;
+		elem_child.className = "grow " + elem_child.className; 
+	}*/
+	//alert(this.parentNode.children[2].children);
+	
+	elem_child = this.parentNode.children[2];
+	
+	elem_child.style["transition"] = "0.45s cubic-bezier(0.47, 0, 0.745, 0.715)";
+ 
+	if(!elem_child.classList.contains("grow"))
+	{
+		elem_child.classPreserved = elem_child.className;
+		elem_child.className = "grow " + elem_child.className; 
+	}
+	
 }
 
 function onButtonImgHoverOut()
 { 
-	let elem = this; 
-	//item buttonBrick item-content
-	//alert(elem.classList)
-		
-	//elem.style["z-index"] = "0";
+	let elem = this;
+  
+	//img transform
 	if(elem.classList.contains("grow"))
 	{
-		elem.classList.remove("grow");
-		//elem.className = elem.classPreserved;
+		elem.classList.remove("grow"); 
+	}
+	
+	let elem_child = this.parentNode.children[2];
+  
+	//text/button transform
+	if(elem_child.classList.contains("grow"))
+	{
+		elem_child.classList.remove("grow"); 
 	}
 }
 
@@ -480,7 +502,7 @@ function buildGreatWall(config_main,config_color,config_text,k,image_name_list)
 						item_brick_img.setAttribute("onClick", config_main["HTMLNodes"][k]["properties"]["onClick"]+"("+flex_container.children[z].children[0].id+");" );
 					if( config_main["HTMLNodes"][k]["properties"]["onClickPlus"] != null)
 					{
-						item_brick_inner_plus.setAttribute("onClick", config_main["HTMLNodes"][k]["properties"]["onClickPlus"]+"("+flex_container.children[z].children[0].id+"_"+z+");" );
+						item_brick_inner_plus.function_click_preserved = config_main["HTMLNodes"][k]["properties"]["onClickPlus"]+"("+flex_container.children[z].children[0].id+"_"+z+");"; // .setAttribute("onClick", config_main["HTMLNodes"][k]["properties"]["onClickPlus"]+"("+flex_container.children[z].children[0].id+"_"+z+");" );
 					}
 					
 				}
@@ -783,11 +805,10 @@ function updateAnimationWall()
 	  if(!content.classList.contains("image_button"))
 	  {
 		content.classList.add("item-content");
-		//if (content.firstChild) {
+		//if (content.firstChild){
 			//content.children[0].style.display = "none";
 			//content.removeChild(content.firstChild);
 		//}
-		
 	  }
 	  else
 	  {
@@ -800,6 +821,18 @@ function updateAnimationWall()
 			//content.children[0].style.display = "none";
 			content.children[0].style.visibility = "hidden";
 			//content.removeChild(content.firstChild);
+			
+			//1) set node clone's (content) onclick attribute here, transfer ID over from above to cloned node here (neat trick!):
+			//alert(node.children[1].children[0].getAttribute("onClick"));
+			
+			//alert(node.children[1].getAttribute("onClick"));
+			content.children[1].id = node.children[1].children[0].id;
+			content.children[1].setAttribute("onClick",node.children[1].children[0].function_click_preserved);
+			//2) set visibility or node to hidden here, turnoff onlcick
+			node.children[1].children[0].setAttribute("onClick","");
+			node.children[1].children[0].id = "";
+			node.children[1].style.visibility = "hidden";
+			//node.setAttribute("onClick","");
 		}
 		
 	  }

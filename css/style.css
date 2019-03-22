@@ -269,7 +269,7 @@ body div[id^='row']
   position: absolute;
   margin: 0;
   border-radius:25px;
-  transition: 0.45s cubic-bezier(0.47, 0, 0.745, 0.715); /*easing fade back, slightly faster*/
+  transition: 0.45s cubic-bezier(0.47, 0, 0.745, 0.715); /*easing fade back, slightly slower*/
   transform: scale(1.0, 1.0);
   align-items: center !important;
 }
@@ -279,7 +279,7 @@ body div[id^='row']
   position: relative !important;
   margin: 0;
   border-radius:10px;
-  transition: 0.45s cubic-bezier(0.47, 0, 0.745, 0.715); /*easing fade back, slightly faster*/
+  transition: 0.45s cubic-bezier(0.47, 0, 0.745, 0.715); /*easing fade back, slightly slower*/
   transform: scale(1.0, 1.0);
   align-items: center !important;
   z-index: 11 !important;
