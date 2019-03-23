@@ -42,5 +42,7 @@
 		"#dba2e6", "#76fc1b", "#608fa4", "#20f6ba", "#07d7f6", "#dce77a", "#77ecca"
 	],
 	"Paired-accessible":
-	["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"]
+	["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"],
+	"w3schools":
+	["#ff6347", "#FFA500", "#b2df8a", "#33a02c", "#1e90ff", "#3cb371", "#6a5acd", "#8a2be2"]
 }

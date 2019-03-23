@@ -239,6 +239,7 @@ body div[id^='row']
 
 .buttonBrick{
 	margin: 0.2em 3.2em 0.2em 3.2em; /*top right bottom left*/
+	background-color:#transparent;
 }
 
 .image_button {
@@ -256,13 +257,13 @@ body div[id^='row']
 	display:flex;
 	font-family:Dosis;
 	color:#FFFFFF !important;
-	background-color:#4CAF50 !important;
+	/*background-color:#4CAF50 !important;*/
 	border-radius:25px;
 	cursor:pointer;
 	/*font-size:30px !important;*/
 	text-align: center;
 	justify-content: center;
-	border": 2px solid #4CAF50;
+	border: 2px solid #4CAF50;
 } 
 
 .item-content {
@@ -541,7 +542,7 @@ body {
 .ripple-out:before {
   content: '';
   position: absolute;
-  border: #4CAF50 solid 6px;
+  border: solid 6px;
   border-radius: 25px;
   top: 0;
   right: 0;
@@ -608,7 +609,7 @@ body {
 {
   content: '';
   position: absolute;
-  border: #4CAF50 solid 6px;
+  border: solid 6px;
   border-radius: 25px;
   top: -12px;
   right: -12px;

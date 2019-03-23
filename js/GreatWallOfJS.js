@@ -1,4 +1,10 @@
 
+
+	  let ripple_in_effect = document.createElement("style");
+	  let ripple_out_effect = document.createElement("style");
+	document.head.appendChild(ripple_in_effect);
+	document.head.appendChild(ripple_out_effect);
+
 let request = obj => {
     return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
@@ -99,10 +105,40 @@ function ease(progress) {
   return 1 - progress;
 }
 
+//Function to convert rgb color to hex format
+function rgb2hex(rgb) {
+ rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+ return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+}
+
+let hexDigits = new Array ("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"); 
+
+function hex(x) {
+  return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+ }
+ 
+ 
+ function addHexColor(c1, c2) {
+	 
+	 if(c1.includes('#'))
+	 {
+		 c1 = c1.split("#")[1]
+	 }
+	 if(c2.includes('#'))
+	 {
+		 c2 = c2.split("#")[1]
+	 }
+	 //alert(c1);
+  var hexStr = (parseInt(c1, 16) + parseInt(c2, 16)).toString(16);
+  while (hexStr.length < 6) { hexStr = '0' + hexStr; } // Zero pad.
+  return "#" + hexStr;
+}
 
 //can keep an array of sleected ids here in this function below (depending if multiselect is true or false...)...
 function onButtonBrickSelected(id)
 {
+	//alert(id[0].style["borderColor"]);
+	
 	let flex_container = document.getElementById(id[0].flex_container_id);
 	 
 	let elem = id[1];//document.getElementById(id[0].id);
@@ -115,14 +151,16 @@ function onButtonBrickSelected(id)
 			let childNode = id[0].parentNode.parentNode.childNodes[z].childNodes[1].childNodes[0];
 			if(elem.id != childNode.id && childNode.classList.contains(id[0].cssSelected) )
 				//alert(id[0].parentNode.parentNode.childNodes[z].classList);
-			{ 
+			{
 				childNode.classList.remove(id[0].cssSelected);
+				
+				childNode.style["background-color"] = childNode.color_preserved;
 				
 				/// make a similar case here, except check if selected above...
 				if(!childNode.classList.contains("ripple-out"))
 				{ 
-					childNode.className = 
-					"ripple-out" + " " + childNode.className;  
+					ripple_out_effect.innerHTML = ".ripple-out:before {border-color: "+ childNode.style["border-color"] +";}";
+					childNode.className = "ripple-out" + " " + childNode.className;  
 				}
 				//timeout after 1 second... (must match css...)
 				setTimeout(function() { 
@@ -135,43 +173,78 @@ function onButtonBrickSelected(id)
 				}, 200);
 				
 			}
+			else if(elem.id == childNode.id)
+			{
+				ripple_out_effect.innerHTML = ".ripple-out:before {border-color: "+id[1].style["border-color"] +";}";
+			}
 		}
 	}
-
-
-	let ripple_effect = "ripple-out";
 	
-	if(!elem.classList.contains(id[0].cssSelected))
-	{
-		elem.className += " " + id[0].cssSelected; 
-		elem.classPreserved = elem.className;
-		ripple_effect = "ripple-in";
-	}
-	else
-	{
-		elem.classList.remove(id[0].cssSelected);
-	}
-	
-	
-	/// make a similar case ehre, except check if selected above...
-	if(!elem.classList.contains(ripple_effect))
-	{
-		elem.className = ripple_effect + " " + elem.className; 
-	}
-	//timeout after 1 second... (must match css...)
-	setTimeout(function() { 
+	ripple_in_effect.innerHTML = ".ripple-in:before {border-color: "+id[1].style["border-color"] +";}";
 
-		if(elem.classList.contains(ripple_effect))
+		let ripple_effect = "ripple-out";
+		
+		if(!elem.classList.contains(id[0].cssSelected))
 		{
-			elem.classList.remove(ripple_effect);
-			//elem.className = elem.classPreserved;
+			elem.className += " " + id[0].cssSelected; 
+			elem.classPreserved = elem.className;
+			ripple_effect = "ripple-in";
+			
+			//alert(rgb2hex(id[1].style["borderColor"]));
+			
+			//alert( addHexColor( rgb2hex(id[1].style["borderColor"] ),"111111") );
+			id[1].color_preserved = id[1].style["background-color"];
+			id[1].style["background-color"] = addHexColor( rgb2hex(id[1].style["border-color"]),"114034");//id[1].style["borderColor"];
+			
+		}
+		// don't need this case for non-multiselect, as if the same button is selected, we don't want to de-select it// else //
+		else if( flex_container.multiSelect == "true")
+		{
+			ripple_out_effect.innerHTML = ".ripple-out:before {border-color: "+id[1].style["border-color"] +";}";
+			elem.classList.remove(id[0].cssSelected);
+			id[1].style["background-color"] = id[1].color_preserved;
 		}
 		
-	}, 200);
+		
+		/// make a similar case ehre, except check if selected above...
+		if(!elem.classList.contains(ripple_effect))
+		{
+			elem.className = ripple_effect + " " + elem.className; 
+		}
+		//timeout after 1 second... (must match css...)
+		setTimeout(function() { 
 
-	
+			if(elem.classList.contains(ripple_effect))
+			{
+				elem.classList.remove(ripple_effect);
+				//elem.className = elem.classPreserved;
+			}
+			
+		}, 200);
+
+		
 	
 }
+
+function getRuleWithSelector(selector) {
+  var numSheets = document.styleSheets.length,
+    numRules,
+    sheetIndex,
+    ruleIndex;
+  // Search through the style sheets.
+  for (sheetIndex = 0; sheetIndex < numSheets; sheetIndex += 1) {
+    numRules = document.styleSheets[sheetIndex].cssRules.length;
+    for (ruleIndex = 0; ruleIndex < numRules; ruleIndex += 1) {
+      if (document.styleSheets[sheetIndex].cssRules[ruleIndex].selectorText === selector) {
+        return document.styleSheets[sheetIndex].cssRules[ruleIndex];
+      }
+    }
+  }
+  // If we get this far, then the rule doesn't exist.
+  // So the return value is undefined.
+}
+
+
 
 function onClickPlus(id)
 {
@@ -212,8 +285,13 @@ function onClickPlus(id)
 			}
 		}
 	}*/
-
-
+	 
+	  //alert(id[0].style["border-color"]);
+	  
+	ripple_in_effect.innerHTML = ".ripple-in:before {border-color: "+id[0].style["border-color"] +";}";
+	ripple_out_effect.innerHTML = ".ripple-out:before {border-color: "+id[0].style["border-color"] +";}";
+	
+	
 	let ripple_effect = "ripple-out";
 	
 	if(!elem.classList.contains(id.cssSelected))
@@ -357,6 +435,14 @@ function getTextWidth(text, font) {
     return metrics.width;
 }
 
+function getRandIntRange(min, max) 
+{
+		  min = Math.ceil(min);
+		  max = Math.floor(max);
+		  return Math.floor(Math.random() * (max - min)) + min;
+}
+		
+
 function buildGreatWall(config_main,config_color,config_text,k,image_name_list)
 {
 		lines = config_text.split(/\//);
@@ -388,7 +474,15 @@ function buildGreatWall(config_main,config_color,config_text,k,image_name_list)
 					let item_brick_img = document.createElement("img");
 					//instead of item_brick innder, give item_brick_img item_brick_inner's ID...
 					item_brick_img.id = config_main["HTMLNodes"][k]["DOM_name"] + z;
-					item_brick_img.src = config_main["HTMLNodes"][k]["properties"]["img_dir"] + image_name_list[z % image_name_list.length];
+					
+					if(config_main["HTMLNodes"][k]["properties"]["img_order"] == "rand")
+					{
+						item_brick_img.src = config_main["HTMLNodes"][k]["properties"]["img_dir"] + image_name_list[getRandIntRange(0,image_name_list.length)];
+					}
+					else
+					{
+						item_brick_img.src = config_main["HTMLNodes"][k]["properties"]["img_dir"] + image_name_list[z % image_name_list.length];
+					}
 					
 					if(config_main["HTMLNodes"][k]["properties"]["css"][0]["img-padding"] != null)
 					{
@@ -398,7 +492,15 @@ function buildGreatWall(config_main,config_color,config_text,k,image_name_list)
 					//item_brick_inner.className = "item-content";
 					item_brick_img.className = "item-content-img";
 					
-					item_brick_inner.innerText = lines[z % lines.length].trim();//z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999;
+					if(config_main["HTMLNodes"][k]["properties"]["text_order"]  == "rand")
+					{
+						item_brick_inner.innerText = lines[getRandIntRange(0,lines.length)].trim();//z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999;
+					}
+					else
+					{
+						item_brick_inner.innerText = lines[z % lines.length].trim();//z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999;
+					}
+					
 					//item_brick_inner.id = z + config_main["HTMLNodes"][k]["DOM_name"] + z;
 					item_brick_inner.classPreserved = item_brick_inner.className;
 					
@@ -428,7 +530,25 @@ function buildGreatWall(config_main,config_color,config_text,k,image_name_list)
 							{ 
 								//item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
 								item_brick_inner_plus.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+							}
+							else if(key == "border-color")
+							{
+								if(config_main["HTMLNodes"][k]["properties"]["color_order"]  == "rand")
+								{
+									//item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+									item_brick_inner_plus.style[key] = config_color[config_main["HTMLNodes"][k]["properties"]["color_config"]][getRandIntRange(0,config_color[config_main["HTMLNodes"][k]["properties"]["color_config"]].length)];
+								}
+								else
+								{
+									item_brick_inner_plus.style[key] = config_color[config_main["HTMLNodes"][k]["properties"]["color_config"]][z % config_color[config_main["HTMLNodes"][k]["properties"]["color_config"]].length];
+								}	
 								
+								//default boder color-> don't use, read in though config_color file item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+									
+								/*if(z % 2 == 0)
+								item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+								else
+								item_brick_inner.style[key] = "#aa00aa";*/
 							}
 							//same as line below...
 							else if (key == "width")
@@ -529,7 +649,15 @@ function buildGreatWall(config_main,config_color,config_text,k,image_name_list)
 					
 					item_brick_inner.className = "item-content";
 					
-					item_brick_inner.innerText = lines[z % lines.length].trim();//z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999;
+					if(config_main["HTMLNodes"][k]["properties"]["text_order"]  == "rand")
+					{
+						item_brick_inner.innerText = lines[getRandIntRange(0,lines.length)].trim();//z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999;
+					}
+					else
+					{
+						item_brick_inner.innerText = lines[z % lines.length].trim();//z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999 + z*9999999 + "\n" + z*9999999;
+					}
+					
 					item_brick_inner.id = config_main["HTMLNodes"][k]["DOM_name"] + z;
 					item_brick_inner.classPreserved = item_brick_inner.className;
 					
@@ -550,6 +678,26 @@ function buildGreatWall(config_main,config_color,config_text,k,image_name_list)
 							if(key == "border")
 							{ 
 								item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+							}
+							else if(key == "border-color")
+							{
+								if(config_main["HTMLNodes"][k]["properties"]["color_order"]  == "rand")
+								{
+									//item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+									//some colors are not good when added, see add hex colro funciton above, may need to cut out some colros from the modern palette "safe" (test colors indivisually) or may need to threshold / cap colors, 
+									item_brick_inner.style[key] = config_color[config_main["HTMLNodes"][k]["properties"]["color_config"]][getRandIntRange(0,config_color[config_main["HTMLNodes"][k]["properties"]["color_config"]].length)];
+								}
+								else
+								{
+									item_brick_inner.style[key] = config_color[config_main["HTMLNodes"][k]["properties"]["color_config"]][z % config_color[config_main["HTMLNodes"][k]["properties"]["color_config"]].length];
+								}	
+								
+								//default boder color-> don't use, read in though config_color file item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+									
+								/*if(z % 2 == 0)
+								item_brick_inner.style[key] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+								else
+								item_brick_inner.style[key] = "#aa00aa";*/
 							}
 							//same as line below...
 							else if (key == "width")

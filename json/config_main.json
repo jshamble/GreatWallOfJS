@@ -13,7 +13,10 @@
 			"mouseleave":"onButtonBrickHoverOut",
 			"cssSelected":"buttonBrickSelected",
 			"multiSelect":"false",
+			"text_order":"seq",
 			"text_dir":"json/lang1/",
+			"color_config":"modern",
+			"color_order":"rand",
 			"css":[
 				{
 					"display":"flex",
@@ -25,7 +28,8 @@
 					"cursor":"pointer",
 					"text-align": "center",
 					"justify-content": "center",
-					"border": "2px solid #4CAF50",
+					"border": "2px solid",
+					"border-color": "#4CAF50",
 					"width": "50px",
 					"height" : "50px",
 					"white-space" : "nowrap"
@@ -64,6 +68,7 @@
 			"onClickPlus":"onClickPlus",
 			"cssSelected":"buttonBrickSelected",
 			"multiSelect":"false",
+			"img_order":"seq",
 			"text_dir":"json/lang1/",
 			"css":[
 				{

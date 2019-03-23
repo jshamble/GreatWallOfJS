@@ -1,5 +1,6 @@
 The Great Wall Of JS: Built sturdy like the Great wall of china, a multi-purpose grid library using flexbox and flex wrap.
 
+"the place of most interest is the palce of the greatest contrast" - Art teacher, Jim Machacek
 
 (has video and audio recorder / exporter)
 
@@ -16,6 +17,16 @@ font-sequence-inner: in-order | Random
 font-sequence-outer: in-order | Random
 size-sequence: in-order | Random / gaps (invisible buttons of a certain size added, with hidden propery and unlickable, add to number added when reated if applicable 
 for(+gapNumber)
+
+text-order:
+rand | sequential
+
+border-color-order:
+rand | sequential
+
+img-order:
+rand | sequential
+
 
 if(item is gap)
 {
