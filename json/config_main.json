@@ -5,7 +5,7 @@
 		"DOM_name": "GreatWallOfJS0",
 		"properties":
 		{
-			"num-elems": "52",
+			"num-elems": "34",
 			"justify-content": "align-content-start",
 			"className" : "buttonBrick",
 			"onClick":"onButtonBrickSelected",
@@ -13,7 +13,7 @@
 			"mouseleave":"onButtonBrickHoverOut",
 			"cssSelected":"buttonBrickSelected",
 			"multiSelect":"false",
-			"text_order":"seq",
+			"text_order":"rand",
 			"text_dir":"json/lang1/",
 			"color_config":"modern",
 			"color_order":"rand",
@@ -70,12 +70,14 @@
 			"multiSelect":"false",
 			"img_order":"seq",
 			"text_dir":"json/lang1/",
+			"color_config":"modern",
+			"color_order":"rand",
 			"css":[
 				{
 					"display":"flex",
 					"flex-flow": "column",
-					"img_width": "100px",
-					"img_height": "100px",
+					"img_width": ["200","300","px"],
+					"img_height": ["200","300","px"],
 					"font":"bold 16pt Verdana",
 					"color":"#000000",
 					"background-color":"#FFFFFF",
@@ -83,7 +85,8 @@
 					"cursor":"pointer",
 					"text-align": "center",
 					"justify-content": "center",
-					"border": "2px solid #4CAF50",
+					"border": "2px solid",
+					"border-color": "#4CAF50",
 					"img_padding" : "10px",
 					"plus_margin":"0 0 0 5px",
 					"plus_padding":"0 4px 0 4px"
@@ -100,7 +103,8 @@
 					"text-align": "center",
 					"align-items": "center",
 					"justify-content": "center",
-					"border": "0px solid #4CAF50",
+					"border": "0px solid",
+					"border-color": "#4CAF50",
 					"white-space" : "nowrap"
 				}
 			]

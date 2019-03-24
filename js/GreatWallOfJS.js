@@ -41,47 +41,72 @@ function getParentNodeIndex(nodes,nodeName)
 }	
 
 
-	var dirty  = true;
+	let dirty  = true;
 
 	/*for (var i = 0; i < inputs.length; i++) {
 	  inputs[i].addEventListener("change", layout);
 	} */
 
 
-	var nodes  = document.querySelectorAll(".item");
-	var total  = nodes.length;
-	var boxes  = [];
-	var time   = 0.7;
-	var omega  = 12;
-	var zeta   = 0.9999;//0.9;
-	
-window.addEventListener("resize", () => { dirty = true; });
+	let nodes  = document.querySelectorAll(".item");
+	let total  = nodes.length;
+	let boxes  = [];
+	let time   = 0.7;
+	let omega  = 7;
+	let zeta   = 0.9999;//0.9;
+	let beta  = 0.014141782065918275;//just hardcode it for now, orig eiqaution is listed to the right//Math.sqrt(1.0 - zeta * zeta);
 
-TweenLite.ticker.addEventListener("tick", () => dirty && layout());
+//debounce for smoothness during easing callback...
+function debounce(fn, threshold) {
+  var timeout;
+  return function debounced() {
+    if ( timeout ) {
+      clearTimeout( timeout );
+    }
+    function delayed() {
+      fn();
+      timeout = null;
+    }
+    timeout = setTimeout( delayed, threshold || 100 );
+  }
+}
+
+window.addEventListener("resize", debounce(function() { dirty = true;},10) );
+TweenLite.ticker.addEventListener("tick", () =>  dirty && layout());
+
+
+
+function ease(progress) {
+  progress = 1 - Math.cos(progress * Math.PI / 2);   
+  progress = 1 / beta * 
+    Math.exp(-zeta * omega * progress) * 
+    Math.sin( beta * omega * progress + Math.atan(beta / zeta));
+  return 1 - progress;
+}
 
 function layout() {
   
   dirty = false;
-  for (var i = 0; i < total; i++) {
+  for (let i = 0; i < total; i++) {
     
-    var box = boxes[i];
+    let box = boxes[i];
         
-    var lastX = box.x;
-    var lastY = box.y;   
+    let lastX = box.x;
+    let lastY = box.y;   
        
-    var lastW = box.width;
-    var lastH = box.height;     
+    let lastW = box.width;
+    let lastH = box.height;     
     
-    var width  = box.width  = box.node.offsetWidth;
-    var height = box.height = box.node.offsetHeight;
+    let width  = box.width  = box.node.offsetWidth;
+    let height = box.height = box.node.offsetHeight;
     
     box.x = box.node.offsetLeft;
     box.y = box.node.offsetTop;      
         
     if (lastX !== box.x || lastY !== box.y) {
       
-      var x = box.transform.x + lastX - box.x;
-      var y = box.transform.y + lastY - box.y;  
+      let x = box.transform.x + lastX - box.x;
+      let y = box.transform.y + lastY - box.y;  
       
       // Tween to 0 to remove the transforms
       TweenLite.set(box.node, { x, y });
@@ -89,25 +114,20 @@ function layout() {
     }
         
     if (lastW !== box.width || lastH !== box.height) {      
-      
       TweenLite.to(box.content, time, { autoRound: false, width, height, ease });      
     }
   }  
 }
 
-function ease(progress) {
-  var beta  = Math.sqrt(1.0 - zeta * zeta);
-  progress = 1 - Math.cos(progress * Math.PI / 2);   
-  progress = 1 / beta * 
-    Math.exp(-zeta * omega * progress) * 
-    Math.sin( beta * omega * progress + Math.atan(beta / zeta));
-
-  return 1 - progress;
-}
 
 //Function to convert rgb color to hex format
 function rgb2hex(rgb) {
+ 
  rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+ 
+ //if rgb is null  (intial??? where is this coming from?) / close to black...
+ if(rgb == null) return "#4CAF50";
+ 
  return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
 }
 
@@ -129,10 +149,12 @@ function hex(x) {
 		 c2 = c2.split("#")[1]
 	 }
 	 //alert(c1);
-  var hexStr = (parseInt(c1, 16) + parseInt(c2, 16)).toString(16);
+  let hexStr = (parseInt(c1, 16) + parseInt(c2, 16)).toString(16);
   while (hexStr.length < 6) { hexStr = '0' + hexStr; } // Zero pad.
   return "#" + hexStr;
 }
+
+let close_enough_to_white = new Set(["#102ee4a","#ffffff","#1039142","#10b4720","#1064456","#10298f3","#10d85c2","#111350b","#1067b5e","#103461a"]);
 
 //can keep an array of sleected ids here in this function below (depending if multiselect is true or false...)...
 function onButtonBrickSelected(id)
@@ -193,9 +215,16 @@ function onButtonBrickSelected(id)
 			//alert(rgb2hex(id[1].style["borderColor"]));
 			
 			//alert( addHexColor( rgb2hex(id[1].style["borderColor"] ),"111111") );
-			id[1].color_preserved = id[1].style["background-color"];
-			id[1].style["background-color"] = addHexColor( rgb2hex(id[1].style["border-color"]),"114034");//id[1].style["borderColor"];
-			
+			elem.color_preserved = elem.style["background-color"];
+			let addhex = "114034";//"111111";//114034";
+			let added_colors = addHexColor( rgb2hex(elem.style["border-color"]),addhex); 
+			//alert(added_colors);
+			if(close_enough_to_white.has(added_colors) )
+				elem.style["background-color"] = elem.style["border-color"];
+			else 
+				elem.style["background-color"] = added_colors;
+			//id[1].style["borderColor"];
+			//alert(id[1].style["background-color"] );
 		}
 		// don't need this case for non-multiselect, as if the same button is selected, we don't want to de-select it// else //
 		else if( flex_container.multiSelect == "true")
@@ -288,8 +317,8 @@ function onClickPlus(id)
 	 
 	  //alert(id[0].style["border-color"]);
 	  
-	ripple_in_effect.innerHTML = ".ripple-in:before {border-color: "+id[0].style["border-color"] +";}";
-	ripple_out_effect.innerHTML = ".ripple-out:before {border-color: "+id[0].style["border-color"] +";}";
+	ripple_in_effect.innerHTML = ".ripple-in:before {border-color: "+id[1].style["border-color"] +";}";
+	ripple_out_effect.innerHTML = ".ripple-out:before {border-color: "+id[1].style["border-color"] +";}";
 	
 	
 	let ripple_effect = "ripple-out";
@@ -435,6 +464,10 @@ function getTextWidth(text, font) {
     return metrics.width;
 }
 
+	function getRandFloatRange(min, max) {
+		  return Math.random() * (max - min) + min;
+		}
+		
 function getRandIntRange(min, max) 
 {
 		  min = Math.ceil(min);
@@ -563,7 +596,10 @@ function buildGreatWall(config_main,config_color,config_text,k,image_name_list)
 							else if(key == "img_width" || key == "img_height" )
 							{
 									let split_after = key.split("_");
-									item_brick_img.style[split_after[1]] = config_main["HTMLNodes"][k]["properties"]["css"][0][key];
+									
+									//split into csv: 100,100,px (unit) 
+									
+									item_brick_img.style[split_after[1]] = getRandFloatRange(parseFloat(config_main["HTMLNodes"][k]["properties"]["css"][0][key][0]),parseFloat(config_main["HTMLNodes"][k]["properties"]["css"][0][key][1])) + config_main["HTMLNodes"][k]["properties"]["css"][0][key][2];
 							}
 							else if (key == "height" || key == "width" )
 							{
@@ -942,21 +978,23 @@ function updateAnimationWall()
 	nodes = document.querySelectorAll(".item");
 	total = nodes.length;
 	
-	for (var i = 0; i < total; i++) {
-	  var node   = nodes[i];  
-	  var width  = node.offsetWidth;
-	  var height = node.offsetHeight;    
-	  var color  = "transparent";    
+	for (let i = 0; i < total; i++) {
+	  let node   = nodes[i];  
+	  let width  = node.offsetWidth;
+	  let height = node.offsetHeight;    
+	  let color  = "transparent";    
 		
 	  // Need another element to animate width & height... use clone instead of editing HTML
-	  var content = node.cloneNode(true);
+	  let content = node.cloneNode(true);
 	  if(!content.classList.contains("image_button"))
 	  {
 		content.classList.add("item-content");
-		//if (content.firstChild){
-			//content.children[0].style.display = "none";
+		if (content.firstChild){
+			//alert(node.children.length)
+			node.children[0].style.display = "hidden";
+			content.children[0].style.display = "hidden";
 			//content.removeChild(content.firstChild);
-		//}
+		}
 	  }
 	  else
 	  {
@@ -991,9 +1029,9 @@ function updateAnimationWall()
 	  
 	  node.appendChild(content);
 	  
-	  var transform = node._gsTransform;
-	  var x = node.offsetLeft;
-	  var y = node.offsetTop;
+	  let transform = node._gsTransform;
+	  let x = node.offsetLeft;
+	  let y = node.offsetTop;
 	  
 	  boxes[i] = { content, height, node, transform, width, x, y };
 	} 
@@ -1043,23 +1081,4 @@ function getFileOrDirectoryFromServer(url, filetype, doneCallback){
    //console.log("request sent succesfully");
  });
  return promiseObj;
-}
-
-function createDataArrays(filename, datatype, filetype)
-{    
-		getFileOrDirectoryFromServer(filename, datatype, function(file_and_dir_names) 
-		{
-			if (file_and_dir_names == null) 
-			{
-				alert("An error occured, file could not be read in function createDataArrays(). Please Email the Developer about this issue");
-			}
-			else 
-			{
-				if(filetype == "script")
-				{
-					script_buffer_map = file_and_dir_names.split("/");
-				}
-				
-			}
-		});
 }
