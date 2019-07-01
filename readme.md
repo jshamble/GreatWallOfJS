@@ -1,5 +1,25 @@
 The Great Wall Of JS: Built sturdy like the Great wall of china, a multi-purpose grid library using flexbox and flex wrap.
 
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Importantly, whenever possible, have these open-ended discussions in person or over the phone, not by email.
+
+In fact, try to get as many people on the phone together as possible. 
+
+Push to do a quick conference call with the hiring manager and whoever else is part of the decision-making process.
+
+The more fully you can get the other party to engage in real-time, the better your chances of getting the salary offer increased.
+
+Sure, you might feel a bit more uncomfortable asking for more money over the phone.
+
+But guess what—they’ll feel more uncomfortable saying “no” too.
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
 "the place of most interest is the palce of the greatest contrast" - Art teacher, Jim Machacek
 
 (has video and audio recorder / exporter)
