@@ -1,3 +1,5 @@
+# The Great Wall Of JS
+
 The Great Wall Of JS: a multi-purpose button/image grid library using flexbox and flex wrap.
 
 # Features:
